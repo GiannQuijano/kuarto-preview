@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Kuarto Kitchen Rebuild</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: editorial single column with an architect's elevation drawing as the hero; charcoal bands for the offer and booking. Brand system shared across Kuarto funnels (single light look, by choice). */
+:root{
+  --paper:#F5F2ED; --paper-2:#ECE7DF; --ink:#1C1C1C; --ink-2:#4A4640; --stone:#B8A99A; --brass:#A88B5C; --brass-2:#C4A876;
+  --line:rgba(28,28,28,.14); --line-dark:rgba(245,242,237,.16);
+  --display:"Cormorant Garamond","Cormorant",Georgia,"Times New Roman",serif;
+  --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --wrap:1160px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--paper)}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+@media (max-width:520px){.wrap{padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}}
+h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.04;letter-spacing:-.01em;text-wrap:balance;margin:0}
+p{margin:0}
+a{color:inherit}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--brass)}
+.btn{display:inline-flex;align-items:center;gap:12px;background:var(--ink);color:var(--paper);text-decoration:none;font-weight:500;font-size:15px;letter-spacing:.02em;padding:17px 28px;border:1px solid var(--ink);border-radius:0;cursor:pointer;font-family:var(--sans);transition:background .2s,color .2s}
+.btn:hover{background:var(--brass);border-color:var(--brass)}
+.btn:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+.btn .arrow{transition:transform .2s}.btn:hover .arrow{transform:translateX(4px)}
+.btn.light{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.btn.light:hover{background:var(--brass-2);border-color:var(--brass-2)}
+.fine{font-size:13px;color:var(--ink-2)}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(245,242,237,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.logo{display:flex;align-items:baseline;gap:10px;text-decoration:none}
+.logo b{font-family:var(--display);font-weight:600;font-size:26px;letter-spacing:.24em}
+.logo span{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-2)}
+.bar .right{display:flex;align-items:center;gap:22px}
+.bar .lic{font-family:var(--mono);font-size:11px;color:var(--ink-2);letter-spacing:.06em}
+.bar .btn{padding:11px 18px;font-size:14px}
+@media (max-width:760px){.bar .lic{display:none}.logo span{display:none}}
+
+/* hero */
+.hero{padding-block:64px 40px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:56px;align-items:center}
+.hero h1{font-size:clamp(44px,6.2vw,84px);margin-top:18px}
+.hero h1 em{font-style:italic;color:var(--brass)}
+.hero .lede{font-size:19px;color:var(--ink-2);max-width:34em;margin-top:24px}
+.hero .cta-row{display:flex;flex-wrap:wrap;align-items:center;gap:18px 26px;margin-top:34px}
+.hero .cta-row .fine{max-width:20em}
+.proof{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:44px;border-top:1px solid var(--line)}
+.proof div{padding:16px 16px 0 0}
+.proof b{display:block;font-family:var(--display);font-size:30px;font-weight:500;line-height:1}
+.proof span{font-size:13px;color:var(--ink-2)}
+.drawing{position:relative;background:var(--paper-2);border:1px solid var(--line);padding:22px 18px 14px}
+.drawing svg{display:block;width:100%;height:auto}
+.drawing .hero-photo{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;object-position:50% 60%}
+.drawing{padding:12px 12px 10px}
+.swatch img,.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.ph{position:relative;overflow:hidden}.ph span{position:relative}
+.ph.photo{border:0;background:#2a2826}
+.ba-sec .ba{margin-top:8px}
+/* Before / after comparison (drag) */
+.ba{position:relative;overflow:hidden;aspect-ratio:16/9;max-width:100%;background:#2a2826;user-select:none;-webkit-user-select:none}
+.ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.ba .ba-top{clip-path:inset(0 0 0 var(--p,50%))}
+.ba .ba-handle{position:absolute;top:0;bottom:0;left:var(--p,50%);width:2px;margin-left:-1px;background:#F5F2ED;pointer-events:none}
+.ba .ba-handle::after{content:"\2194";position:absolute;top:50%;left:50%;width:48px;height:48px;margin:-24px 0 0 -24px;border-radius:50%;background:#F5F2ED;color:#1C1C1C;display:grid;place-items:center;font:500 20px/1 system-ui,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.ba .ba-lbl{position:absolute;top:14px;font:500 11px/1 system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;background:rgba(28,28,28,.72);color:#F5F2ED;padding:7px 10px;pointer-events:none}
+.ba .ba-lbl.l{left:14px}.ba .ba-lbl.r{right:14px;background:#A88B5C;color:#1C1C1C}
+.ba input[type=range]{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize;-webkit-appearance:none;appearance:none;touch-action:pan-y}
+.ba input[type=range]:focus-visible + .ba-focus{outline:2px solid #A88B5C;outline-offset:3px}
+.ba-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.ba-pair figure{margin:0;position:relative;aspect-ratio:1/1;overflow:hidden;min-width:0;background:#2a2826}
+.ba-pair img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ba-pair figcaption{position:absolute;left:12px;top:12px;font:500 11px/1 system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;background:rgba(28,28,28,.72);color:#F5F2ED;padding:7px 10px}
+.ba-pair figure + figure figcaption{background:#A88B5C;color:#1C1C1C}
+.concept-note{font-size:.8rem;color:#6B655E;margin-top:14px}
+@media (max-width:600px){.ba{aspect-ratio:4/3}.ba-pair{gap:8px}}
+
+.drawing figcaption{display:flex;justify-content:space-between;gap:12px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);border-top:1px solid var(--line);margin-top:10px;padding-top:10px}
+.stamp{position:absolute;top:-18px;right:-14px;width:118px;height:118px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;text-align:center;font-family:var(--display);font-size:17px;line-height:1.05;transform:rotate(8deg);box-shadow:0 10px 30px rgba(28,28,28,.18)}
+.stamp small{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:var(--brass-2);margin-top:4px}
+@media (max-width:900px){.hero-grid{grid-template-columns:1fr;gap:44px}.stamp{right:6px;top:-26px;width:100px;height:100px;font-size:15px}}
+@media (max-width:520px){.hero{padding-block:40px 24px}.proof b{font-size:24px}.hero .lede{font-size:17px}}
+
+/* section scaffolding */
+section{padding-block:96px}
+@media (max-width:700px){section{padding-block:64px}}
+.sec-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:end;margin-bottom:52px}
+.sec-head h2{font-size:clamp(36px,4.6vw,60px)}
+.sec-head p{color:var(--ink-2);max-width:32em}
+@media (max-width:800px){.sec-head{grid-template-columns:1fr;gap:18px}}
+.dark{background:var(--ink);color:var(--paper)}
+.dark .sec-head p,.dark .fine{color:rgba(245,242,237,.68)}
+
+/* offer */
+.offer-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:48px;align-items:start}
+.stack{list-style:none;margin:0;padding:0;border-top:1px solid var(--line-dark)}
+.stack li{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:16px;align-items:baseline;padding:20px 0;border-bottom:1px solid var(--line-dark)}
+.stack .tick{color:var(--brass-2);font-family:var(--mono)}
+.stack h3{font-size:24px}
+.stack p{font-size:15px;color:rgba(245,242,237,.68);margin-top:4px}
+.stack .tag{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,242,237,.55);white-space:nowrap}
+.bonus{border:1px solid var(--brass);padding:34px 30px;position:relative;background:linear-gradient(180deg,rgba(168,139,92,.14),rgba(168,139,92,0) 70%)}
+.bonus .eyebrow{color:var(--brass-2)}
+.bonus h3{font-size:clamp(34px,3.6vw,46px);margin-top:14px}
+.bonus h3 em{color:var(--brass-2)}
+.bonus p{color:rgba(245,242,237,.75);margin-top:14px}
+.bonus .appl{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:26px}
+.bonus .appl div{border-top:1px solid var(--line-dark);padding-top:12px}
+.bonus .appl b{display:block;font-family:var(--display);font-size:22px;font-weight:500}
+.bonus .appl span{font-size:13px;color:rgba(245,242,237,.6)}
+.bonus .btn{margin-top:30px;width:100%;justify-content:center}
+.bonus .fine{margin-top:12px;text-align:center}
+@media (max-width:900px){.offer-grid{grid-template-columns:1fr}}
+@media (max-width:520px){.stack li{grid-template-columns:22px minmax(0,1fr)}.stack .tag{grid-column:2}}
+
+/* compare */
+.compare{width:100%;border-collapse:collapse;font-size:16px}
+.compare-wrap{overflow-x:auto;border-top:1px solid var(--ink)}
+.compare th,.compare td{text-align:left;padding:18px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+.compare th{font-family:var(--mono);font-weight:500;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
+.compare td:first-child{font-weight:500;width:28%}
+.compare td.k{background:rgba(168,139,92,.09)}
+.compare th.k{color:var(--brass)}
+.compare td.typ{color:var(--ink-2)}
+
+/* timeline */
+.timeline{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;border-top:1px solid var(--ink)}
+.phase{padding:22px 20px 0 0;border-right:1px solid var(--line);padding-left:20px}
+.phase:first-child{padding-left:0}
+.phase:last-child{border-right:0}
+.phase .wk{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--brass)}
+.phase h3{font-size:26px;margin-top:10px}
+.phase p{font-size:15px;color:var(--ink-2);margin-top:10px}
+.bar-track{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;margin-top:40px}
+.bar-track i{height:8px;background:var(--stone);opacity:.55}
+.bar-track i.on{background:var(--ink);opacity:1}
+.track-labels{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--ink-2);margin-top:8px}
+@media (max-width:900px){.timeline{grid-template-columns:1fr}.phase{border-right:0;border-bottom:1px solid var(--line);padding:20px 0}}
+
+/* craft */
+.craft{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px}
+.craft article{display:flex;flex-direction:column;gap:14px}
+.swatch{aspect-ratio:4/5;max-width:100%;border:1px solid var(--line);position:relative;overflow:hidden}
+.swatch span{position:absolute;left:12px;bottom:10px;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);background:rgba(245,242,237,.85);padding:3px 7px}
+.sw-oak{background:repeating-linear-gradient(90deg,#C9AE8A 0 3px,#C3A580 3px 5px,#CDB492 5px 9px,#BE9F79 9px 10px)}
+.sw-stone{background:#EDE9E3;}
+.sw-stone svg,.sw-brass svg{position:absolute;inset:0;width:100%;height:100%}
+.sw-brass{background:linear-gradient(135deg,#8D7248 0%,#C4A876 38%,#A88B5C 60%,#D8C29A 78%,#9A7C4E 100%)}
+.sw-plaster{background:radial-gradient(circle at 30% 20%,#E9E3DA,#D8CFC3 70%)}
+.craft h3{font-size:25px}
+.craft p{font-size:15px;color:var(--ink-2)}
+.spec{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);letter-spacing:.04em;border-top:1px solid var(--line);padding-top:10px}
+@media (max-width:960px){.craft{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.craft{grid-template-columns:1fr}.swatch{aspect-ratio:16/9}}
+
+/* gallery */
+.gallery{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:240px 240px;gap:14px}
+.ph{background:repeating-linear-gradient(135deg,var(--paper-2) 0 14px,#E5DFD6 14px 15px);border:1px dashed var(--stone);display:flex;align-items:flex-end;padding:14px;min-width:0}
+.ph span{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);background:var(--paper);padding:4px 8px}
+.ph.big{grid-row:span 2}
+.ph.wide{grid-column:span 2}
+@media (max-width:760px){.gallery{grid-template-columns:1fr 1fr;grid-template-rows:220px 160px 160px}.ph.big{grid-column:span 2;grid-row:auto}.ph.wide{grid-column:span 2}}
+
+/* quotes */
+.quotes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin-top:56px}
+.quotes blockquote{margin:0;border-top:1px solid var(--line);padding-top:18px}
+.quotes p{font-family:var(--display);font-size:23px;line-height:1.3;font-style:italic;color:var(--ink-2)}
+.quotes cite{display:block;font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--brass);margin-top:14px}
+@media (max-width:860px){.quotes{grid-template-columns:1fr}}
+
+/* booking */
+.book-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:56px;align-items:start}
+.book-grid h2{font-size:clamp(40px,5vw,66px)}
+.book-grid h2 em{color:var(--brass-2)}
+.book-copy p{color:rgba(245,242,237,.72);margin-top:20px;max-width:30em}
+.expect{list-style:none;padding:0;margin:32px 0 0;display:grid;gap:14px}
+.expect li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;font-size:15px;color:rgba(245,242,237,.82)}
+.expect li b{font-family:var(--mono);font-weight:400;color:var(--brass-2);font-size:12px;padding-top:3px}
+.panel{background:var(--paper);color:var(--ink);padding:34px 32px}
+.steps{display:flex;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);margin-bottom:22px}
+.steps span.on{color:var(--ink)}
+.steps span.on::before{content:"";display:inline-block;width:7px;height:7px;background:var(--brass);margin-right:7px;vertical-align:1px}
+.panel h3{font-size:32px}
+form{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field.full{grid-column:1/-1}
+label{font-size:12.5px;font-weight:500;letter-spacing:.02em}
+input,select{font:inherit;font-size:16px;padding:13px 14px;border:1px solid rgba(28,28,28,.28);background:#FBFAF7;color:var(--ink);border-radius:0;width:100%;appearance:none}
+select{background-image:linear-gradient(45deg,transparent 50%,var(--ink) 50%),linear-gradient(135deg,var(--ink) 50%,transparent 50%);background-position:calc(100% - 18px) 55%,calc(100% - 13px) 55%;background-size:5px 5px;background-repeat:no-repeat;padding-right:36px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips label{font-weight:400;font-size:14px;border:1px solid rgba(28,28,28,.28);padding:9px 13px;cursor:pointer;background:#FBFAF7}
+.chips input{position:absolute;opacity:0;pointer-events:none;width:1px}
+.chips label:has(input:checked){background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.chips label:has(input:focus-visible){outline:2px solid var(--brass);outline-offset:2px}
+form .btn{grid-column:1/-1;justify-content:center;margin-top:6px}
+.err{grid-column:1/-1;color:#8A3B2A;font-size:14px}
+.cal-fallback{border:1px solid var(--line);padding:26px;margin-top:20px;background:var(--paper-2)}
+.cal-fallback p{color:var(--ink-2);font-size:15px;margin-top:8px}
+.cal-fallback .btn{margin-top:20px}
+.cal-slot{min-width:280px;height:700px;margin-top:16px}
+.cal-slot:empty{display:none}
+@media (max-width:900px){.book-grid{grid-template-columns:1fr}}
+@media (max-width:520px){form{grid-template-columns:1fr}.panel{padding:26px 20px}}
+
+/* faq */
+.faq{max-width:860px}
+details{border-bottom:1px solid var(--line)}
+details:first-of-type{border-top:1px solid var(--ink)}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:20px;padding:24px 0;font-family:var(--display);font-size:26px;line-height:1.2}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:var(--sans);font-weight:300;font-size:26px;color:var(--brass);transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{padding:0 0 24px;color:var(--ink-2);max-width:42em}
+
+/* closing + footer */
+.closing{text-align:left}
+.closing h2{font-size:clamp(40px,5.4vw,72px);max-width:14em}
+.closing .cta-row{display:flex;flex-wrap:wrap;gap:20px;align-items:center;margin-top:34px}
+footer{border-top:1px solid var(--line);padding-block:36px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;font-size:13px;color:var(--ink-2)}
+footer .mono{font-family:var(--mono);letter-spacing:.06em}
+.ph-text{background:rgba(168,139,92,.16);padding:0 4px}
+
+/* mobile sticky cta */
+.mcta{display:none}
+@media (max-width:700px){
+  .mcta{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:55;padding:12px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:var(--ink);gap:12px;align-items:center;justify-content:space-between}
+  .mcta span{color:var(--paper);font-size:13px;line-height:1.3}
+  .mcta .btn{padding:12px 16px;font-size:14px;white-space:nowrap}
+  footer{padding-bottom:110px}
+}
+
+/* drawing strokes */
+.el{fill:none;stroke:var(--ink);stroke-width:1.4}
+.el-thin{fill:none;stroke:var(--ink);stroke-width:.8;opacity:.6}
+.el-fill{fill:#E4DDD2;stroke:var(--ink);stroke-width:1.4}
+.el-stone{fill:#F3F0EA;stroke:var(--ink);stroke-width:1.4}
+.vein{fill:none;stroke:var(--stone);stroke-width:1.1}
+.dim{fill:none;stroke:var(--brass);stroke-width:1}
+.dimt{fill:var(--brass);font-family:var(--mono);font-size:11px;letter-spacing:.06em}
+.draw-in .el,.draw-in .el-fill,.draw-in .el-stone{stroke-dasharray:1600;stroke-dashoffset:0;animation:draw 2.2s ease-out both}
+@keyframes draw{from{stroke-dashoffset:1600}to{stroke-dashoffset:0}}
+</style>
+</head><body>
+
+
+<header class="bar">
+  <div class="wrap">
+    <a class="logo" href="#top"><b>KUARTO</b><span>Construction</span></a>
+    <div class="right">
+      <span class="lic">CA Lic. #<span class="ph-text">0000000</span> · General B</span>
+      <a class="btn" href="#book">Book a design call</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Southern California · Full kitchen rebuilds</p>
+      <h1>Your new kitchen in 12 weeks. <em>The fridge and range are on us.</em></h1>
+      <p class="lede">Kuarto tears out the old kitchen and builds a new one around how you cook: custom cabinetry made for your walls, book-matched stone, new plumbing and lighting. One licensed team, one fixed schedule, and a pro-grade refrigerator and range included at no cost.</p>
+      <div class="cta-row">
+        <a class="btn" href="#book">Book your free design call <span class="arrow">→</span></a>
+        <p class="fine">20 minutes with the builder. You'll leave with a realistic scope, timeline and budget range.</p>
+      </div>
+      <div class="proof">
+        <div><b>12 wks</b><span>Demo to final walkthrough</span></div>
+        <div><b>$0</b><span>For your new fridge and range</span></div>
+        <div><b>1 team</b><span>Design, build, stone, plumbing</span></div>
+      </div>
+    </div>
+    <figure class="drawing" style="margin:0">
+      <div class="stamp"><div>Fridge &amp; range<br>included<small>THIS SEASON</small></div></div>
+      <img class="hero-photo" src="img/K1.jpg" alt="Modern open kitchen with a waterfall island in honed concrete-look quartzite, full-height oak built-ins with integrated fridge and ovens, and linear brass pendants" fetchpriority="high">
+      <figcaption><span>Waterfall island · oak built-ins</span><span>Design concept</span></figcaption>
+    </figure>
+  </div>
+</div>
+
+<!-- BEFORE / AFTER -->
+<section class="ba-sec" style="padding-top:24px" id="before-after">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="eyebrow">Before &amp; after</p><h2 style="margin-top:14px">Same walls. Same windows. Twelve weeks apart.</h2></div>
+      <p>Drag the slider. A cramped 1980s kitchen becomes a waterfall-island kitchen with full-height oak built-ins, integrated appliances and slab stone, without moving the exterior walls.</p>
+    </div>
+    <div class="ba"><img src="img/K1-before.jpg" alt="Cramped 1980s kitchen with honey-oak cabinets, laminate counters and almond appliances" loading="lazy"><img class="ba-top" src="img/K1.jpg" alt="The same kitchen rebuilt with a quartzite waterfall island, oak built-ins and integrated appliances" loading="lazy"><span class="ba-lbl l">Before</span><span class="ba-lbl r">Week 12</span><div class="ba-handle"></div><input type="range" min="0" max="100" value="50" aria-label="Drag to compare before and after"></div>
+    <p class="concept-note">Concept visualization of the Kuarto kitchen standard, not a past client project.</p>
+  </div>
+</section>
+
+<!-- OFFER -->
+<section class="dark" id="offer">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="eyebrow" style="color:var(--brass-2)">The Kuarto kitchen rebuild</p><h2 style="margin-top:14px">Everything from bare studs to the first dinner.</h2></div>
+      <p>One contract covers the whole rebuild. No separate cabinet shop, no stone yard to chase, no plumber who shows up when he can. We schedule every trade ourselves, so the 12 weeks holds.</p>
+    </div>
+    <div class="offer-grid">
+      <ul class="stack">
+        <li><span class="tick">✓</span><div><h3>Design &amp; layout plan</h3><p>Measured drawings, elevations and a 3D walkthrough before demo starts.</p></div><span class="tag">Weeks 1–2</span></li>
+        <li><span class="tick">✓</span><div><h3>Custom cabinetry</h3><p>Built to your exact wall dimensions. Inset or slab doors, soft-close everything, panel-ready for integrated appliances.</p></div><span class="tag">Made to measure</span></li>
+        <li><span class="tick">✓</span><div><h3>Custom stonework</h3><p>You pick the slab at the yard. We template, fabricate and install counters, waterfall island and full-height backsplash.</p></div><span class="tag">Slab selection</span></li>
+        <li><span class="tick">✓</span><div><h3>Plumbing &amp; electrical</h3><p>Sink and gas relocations, pot filler, new circuits, under-cabinet and pendant lighting.</p></div><span class="tag">Licensed trades</span></li>
+        <li><span class="tick">✓</span><div><h3>Permits, demo &amp; cleanup</h3><p>We pull the permits, protect the rest of the house and haul everything away.</p></div><span class="tag">Handled</span></li>
+      </ul>
+      <aside class="bonus">
+        <p class="eyebrow">Included at no cost</p>
+        <h3>A pro-grade refrigerator and range. <em>Free.</em></h3>
+        <p>Every full kitchen rebuild booked this season includes a top-of-the-line refrigerator and range, chosen with you during design and installed by our team. That's a five-figure appliance package you don't pay for.</p>
+        <div class="appl">
+          <div><b>Professional range</b><span>Dual-fuel, up to 48", with griddle option</span></div>
+          <div><b>Integrated refrigerator</b><span>Built-in column or panel-ready, up to 48"</span></div>
+        </div>
+        <a class="btn light" href="#book">Claim the appliance offer <span class="arrow">→</span></a>
+        <p class="fine">Applies to full kitchen rebuilds. Model and size confirmed during design.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARE -->
+<section id="why">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="eyebrow">Why homeowners switch to Kuarto</p><h2 style="margin-top:14px">Most kitchen remodels take most of a year.</h2></div>
+      <p>The usual way means a designer, a cabinet shop, a fabricator and a few subcontractors who don't talk to each other. Each handoff adds weeks. We removed the handoffs.</p>
+    </div>
+    <div class="compare-wrap">
+      <table class="compare">
+        <thead><tr><th></th><th>Typical remodel</th><th class="k">Kuarto rebuild</th></tr></thead>
+        <tbody>
+          <tr><td>Timeline</td><td class="typ">6 to 9 months, often longer</td><td class="k">About 12 weeks, scheduled up front</td></tr>
+          <tr><td>Who you manage</td><td class="typ">Designer, GC, cabinet shop, stone fabricator</td><td class="k">One team, one point of contact</td></tr>
+          <tr><td>Cabinetry</td><td class="typ">Stock boxes with filler strips</td><td class="k">Custom built to your walls</td></tr>
+          <tr><td>Appliances</td><td class="typ">Bought separately, often $15k+</td><td class="k">Refrigerator and range included</td></tr>
+          <tr><td>Design</td><td class="typ">Picked from a showroom catalog</td><td class="k">Drawn for your home and how you cook</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section style="padding-top:0" id="timeline">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="eyebrow">How the 12 weeks run</p><h2 style="margin-top:14px">A schedule you can plan your life around.</h2></div>
+      <p>Cabinetry is built in the shop while demo and rough-in happen at your home. Running those in parallel is how we finish in about three months.</p>
+    </div>
+    <div class="timeline">
+      <div class="phase"><p class="wk">WEEKS 1–2</p><h3>Design</h3><p>Measure, layout, elevations, 3D walkthrough. Slab and appliance selection.</p></div>
+      <div class="phase"><p class="wk">WEEKS 3–5</p><h3>Demo &amp; rough-in</h3><p>Old kitchen out. Plumbing, gas and electrical moved. Inspections passed. Cabinets in the shop.</p></div>
+      <div class="phase"><p class="wk">WEEKS 6–8</p><h3>Cabinetry</h3><p>Drywall, then custom cabinetry installed and leveled. Stone templated off the real boxes.</p></div>
+      <div class="phase"><p class="wk">WEEKS 9–10</p><h3>Stone</h3><p>Counters, waterfall island and backsplash fabricated and set.</p></div>
+      <div class="phase"><p class="wk">WEEKS 11–12</p><h3>Finish</h3><p>Appliances, fixtures, lighting, paint, punch list and final walkthrough.</p></div>
+    </div>
+    <div class="bar-track" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="track-labels"><span>WK 1</span><span>WK 6</span><span>WK 12 · DONE</span></div>
+  </div>
+</section>
+
+<!-- CRAFT -->
+<section style="background:var(--paper-2)" id="craft">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="eyebrow">Materials &amp; craft</p><h2 style="margin-top:14px">Modern lines. Warm materials. Built to last decades.</h2></div>
+      <p>The modern farmhouse look works when the details are right: tight reveals, real wood, stone that runs continuously. These are the standards every Kuarto kitchen is built to.</p>
+    </div>
+    <div class="craft">
+      <article>
+        <div class="swatch"><img src="img/K2.jpg" alt="Floor-to-ceiling fluted oak built-ins with a lit coffee niche" loading="lazy"><span>Rift white oak</span></div>
+        <h3>Cabinetry</h3>
+        <p>Rift-cut oak, painted or stained. Full-overlay or inset doors with consistent 1/8" reveals.</p>
+        <p class="spec">3/4" PLY BOXES · DOVETAIL DRAWERS · SOFT-CLOSE</p>
+      </article>
+      <article>
+        <div class="swatch"><img src="img/K3.jpg" alt="Mitered concrete-finish countertop edge over a light oak cabinet" loading="lazy"><span>Mitered slab edge</span></div>
+        <h3>Stone</h3>
+        <p>Natural quartzite, marble or porcelain slab. Book-matched backsplash and mitered waterfall edges.</p>
+        <p class="spec">3CM SLAB · HONED OR LEATHERED · MITERED EDGE</p>
+      </article>
+      <article>
+        <div class="swatch sw-brass"><span>Brushed brass</span></div>
+        <h3>Fixtures</h3>
+        <p>Commercial-style faucets, pot fillers and hardware in unlacquered or brushed brass that ages well.</p>
+        <p class="spec">SOLID BRASS · POT FILLER · TOUCH FAUCET</p>
+      </article>
+      <article>
+        <div class="swatch"><img src="img/K4.jpg" alt="Plaster range hood over a full-height book-matched marble backsplash and pro range" loading="lazy"><span>Plaster &amp; marble</span></div>
+        <h3>Hood &amp; walls</h3>
+        <p>Hand-troweled plaster hoods, integrated lighting and clean drywall returns with no visible trim.</p>
+        <p class="spec">PLASTER HOOD · 2700K LED · FLUSH OUTLETS</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="eyebrow">The Kuarto kitchen</p><h2 style="margin-top:14px">Old kitchens, rebuilt for how people live now.</h2></div>
+      <p>Design concepts of the kitchens we build: slab stone, oak built-ins and integrated appliances. Ask on your call to see full before-and-after sets in your style.</p>
+    </div>
+    <div class="gallery">
+      <div class="ph big photo"><img src="img/K5.jpg" alt="Kitchen island at night with warm pendants, glowing stone and leather stools" loading="lazy"><span>Island at night · Design concept</span></div>
+      <div class="ph photo"><img src="img/K1-before.jpg" alt="Dated 1980s kitchen before the rebuild" loading="lazy"><span>Before</span></div>
+      <div class="ph photo"><img src="img/K1.jpg" alt="The same kitchen after the 12-week rebuild" loading="lazy"><span>Week 12</span></div>
+      <div class="ph wide photo"><img src="img/K4.jpg" alt="Range wall with book-matched marble slab and plaster hood" loading="lazy" style="object-position:50% 70%"><span>Range wall · Design concept</span></div>
+    </div>
+    <div class="quotes">
+      <blockquote><p>Client review placeholder. Add a real quote about speed and finish quality once approved.</p><cite>Homeowner · City</cite></blockquote>
+      <blockquote><p>Client review placeholder. A quote about the free appliance package works well here.</p><cite>Homeowner · City</cite></blockquote>
+      <blockquote><p>Client review placeholder. A quote about working with one team works well here.</p><cite>Homeowner · City</cite></blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- BOOK -->
+<section class="dark" id="book">
+  <div class="wrap book-grid">
+    <div class="book-copy">
+      <p class="eyebrow" style="color:var(--brass-2)">Free design call · 20 minutes</p>
+      <h2 style="margin-top:14px">Talk to the builder, <em>not a salesperson.</em></h2>
+      <p>Tell us about your kitchen and pick a time. You'll speak directly with the licensed contractor who will run your project.</p>
+      <ul class="expect">
+        <li><b>01</b><span>We look at your current kitchen from photos and talk through what's not working.</span></li>
+        <li><b>02</b><span>You get a realistic scope, timeline and budget range on the call.</span></li>
+        <li><b>03</b><span>If it's a fit, we schedule an in-home measure and lock your appliance package.</span></li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="steps"><span id="s1" class="on">1 · Your kitchen</span><span>/</span><span id="s2">2 · Pick a time</span></div>
+      <div id="step1">
+        <h3>A few quick questions</h3>
+        <form id="qual" novalidate>
+          <div class="field"><label for="f-name">Full name</label><input id="f-name" name="name" autocomplete="name" required></div>
+          <div class="field"><label for="f-phone">Mobile</label><input id="f-phone" name="phone" type="tel" autocomplete="tel" required></div>
+          <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+          <div class="field"><label for="f-zip">ZIP code</label><input id="f-zip" name="zip" inputmode="numeric" maxlength="5" autocomplete="postal-code" required></div>
+          <div class="field full"><label id="l-when">When do you want to start?</label>
+            <div class="chips" role="radiogroup" aria-labelledby="l-when">
+              <label><input type="radio" name="when" id="w1" value="Within 1 month">Within a month</label>
+              <label><input type="radio" name="when" id="w2" value="1–3 months">1–3 months</label>
+              <label><input type="radio" name="when" id="w3" value="3–6 months">3–6 months</label>
+              <label><input type="radio" name="when" id="w4" value="Just exploring">Just exploring</label>
+            </div>
+          </div>
+          <div class="field full"><label for="f-budget">Investment range for the full kitchen</label>
+            <select id="f-budget" name="budget" required>
+              <option value="">Select a range</option>
+              <option>$75k to $125k</option>
+              <option>$125k to $200k</option>
+              <option>$200k+</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+          <p class="err" id="err" hidden>Please fill in your name, phone, email, ZIP and budget range so we can prepare for the call.</p>
+          <button class="btn" type="submit">Continue to pick a time <span class="arrow">→</span></button>
+          <p class="fine" style="grid-column:1/-1">We'll only use this to prepare for your call. No spam, no sharing.</p>
+        </form>
+      </div>
+      <div id="step2" hidden>
+        <h3 id="hi">Pick a time that works</h3>
+        <p class="fine" style="margin-top:8px">Your appliance offer is reserved while you book.</p>
+        <!-- Live deploy: replace data-url with Kuarto's Calendly event link. The widget loads automatically on a normal web host. -->
+        <div class="cal-slot" id="cal" data-url="https://calendly.com/kuarto-construction/kitchen-design-call?hide_gdpr_banner=1"></div>
+        <div class="cal-fallback" id="calfb">
+          <p class="eyebrow">Booking calendar</p>
+          <p>Open the calendar to choose a 20-minute slot. Your details carry over.</p>
+          <a class="btn" id="callink" href="https://calendly.com/kuarto-construction/kitchen-design-call" target="_blank" rel="noopener">Open booking calendar <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:32px"><div><p class="eyebrow">Questions</p><h2 style="margin-top:14px">Before you book</h2></div></div>
+    <div class="faq">
+      <details><summary>How can a full kitchen really take 12 weeks?</summary><p>We build your cabinets in the shop while demo and rough-in happen at your home, and we schedule every trade ourselves. Nothing waits on a handoff between companies. The schedule is set before demo and you see it week by week.</p></details>
+      <details><summary>Is the refrigerator and range really free?</summary><p>Yes. Every full kitchen rebuild booked during this offer includes a top-of-the-line refrigerator and range at no cost. We select the models with you during design so they fit the layout and the cabinetry is built around them.</p></details>
+      <details><summary>What does a Kuarto kitchen cost?</summary><p>Most full rebuilds land in the low-to-mid six figures depending on size, layout changes and materials. You'll get a realistic range on the design call and a fixed proposal after the in-home measure.</p></details>
+      <details><summary>Do we have to move out?</summary><p>Usually not. We seal off the work area, keep the rest of the house clean, and can set up a temporary kitchen station if you want one.</p></details>
+      <details><summary>Where do you work?</summary><p>Across Southern California. Share your ZIP code when you book and we'll confirm.</p></details>
+      <details><summary>Are you licensed and insured?</summary><p>Yes. Kuarto Construction is a licensed California general contractor (Lic. #<span class="ph-text">0000000</span>) and fully insured. We pull every permit for your project.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section style="background:var(--paper-2)" class="closing">
+  <div class="wrap">
+    <p class="eyebrow">Limited build slots each quarter</p>
+    <h2 style="margin-top:14px">Cook in your new kitchen by spring.</h2>
+    <div class="cta-row">
+      <a class="btn" href="#book">Book your free design call <span class="arrow">→</span></a>
+      <p class="fine">Free refrigerator and range with every full rebuild booked this season.</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><b style="font-family:var(--display);font-size:18px;letter-spacing:.2em;color:var(--ink)">KUARTO</b>&nbsp; Construction · Southern California</span>
+    <span class="mono">CA Lic. #<span class="ph-text">0000000</span> · <span class="ph-text">(000) 000-0000</span> · Insured</span>
+  </div>
+</footer>
+
+<div class="mcta"><span>Free fridge + range<br>with your rebuild</span><a class="btn light" href="#book">Book a call</a></div>
+
+<script>
+(function(){
+  var form=document.getElementById('qual'),err=document.getElementById('err');
+  var base='https://calendly.com/kuarto-construction/kitchen-design-call';
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var d=new FormData(form);
+    var need=['name','phone','email','zip','budget'];
+    var ok=need.every(function(k){return String(d.get(k)||'').trim()});
+    if(!ok||!/\S+@\S+\.\S+/.test(d.get('email'))){err.hidden=false;return}
+    err.hidden=true;
+    var first=String(d.get('name')).trim().split(/\s+/)[0];
+    document.getElementById('hi').textContent='Thanks, '+first+'. Pick a time that works.';
+    var q='?name='+encodeURIComponent(d.get('name'))+'&email='+encodeURIComponent(d.get('email'))+'&a1='+encodeURIComponent(d.get('phone'))+'&hide_gdpr_banner=1';
+    document.getElementById('callink').href=base+q;
+    var cal=document.getElementById('cal');cal.setAttribute('data-url',base+q);
+    document.getElementById('step1').hidden=true;document.getElementById('step2').hidden=false;
+    document.getElementById('s1').classList.remove('on');document.getElementById('s2').classList.add('on');
+    /* On a live host, push the lead to your CRM / Meta Pixel here, e.g. fbq('track','Lead'). */
+    if(window.Calendly&&Calendly.initInlineWidget){Calendly.initInlineWidget({url:base+q,parentElement:cal});document.getElementById('calfb').hidden=true}
+  });
+})();
+</script>
+<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+<script>
+document.querySelectorAll('.ba input[type=range]').forEach(function(r){function u(){r.parentNode.style.setProperty('--p',r.value+'%')}r.addEventListener('input',u);u();});
+</script>
+
+</body></html>
